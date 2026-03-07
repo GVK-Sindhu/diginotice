@@ -1,0 +1,241 @@
+.layout-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--background);
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    background-color: var(--card);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    padding-left: 0.5rem;
+}
+
+.brand-icon {
+    background-color: var(--primary);
+    color: white;
+    padding: 0.6rem;
+    border-radius: 12px;
+    display: flex;
+    box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    border-radius: 12px;
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.nav-link.active {
+    background-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.25);
+}
+
+.nav-link svg {
+    transition: transform 0.2s;
+}
+
+.nav-link:hover svg {
+    transform: translateX(2px);
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--background);
+    border-radius: 16px;
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--border);
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), #8b85ff);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.2);
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-name {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    border-radius: 12px;
+    color: var(--error);
+    background: transparent;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.btn-logout:hover {
+    background-color: #fff1f2;
+    border-color: #fecaca;
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top Bar Styling */
+.top-bar {
+    height: 80px;
+    background-color: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.page-title h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.top-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.content-body {
+    padding: 2.5rem;
+    flex: 1;
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .layout-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+        margin-bottom: 1rem;
+    }
+
+    .nav-links {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .nav-link span,
+    .user-info,
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main-content {
+        padding: 0;
+    }
+
+    .top-bar {
+        padding: 0 1rem;
+    }
+
+    .content-body {
+        padding: 1.5rem;
+    }
+}

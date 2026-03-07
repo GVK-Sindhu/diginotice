@@ -1,10 +1,10 @@
-# 📄 NoticeHub: Smart Notice & Analytics System
+#  NoticeHub: Smart Notice & Analytics System
 
 NoticeHub is a modern, full-stack campus communication platform designed to streamline the broadcasting of academic notices and placement drives. It features role-based dashboards, real-time analytics, and a centralized notice board.
 
 ---
 
-## 🖼️ UI Walkthrough & Features
+##  UI Walkthrough & Features
 
 The following screenshots demonstrate the core functionalities and the user experience of NoticeHub.
 
@@ -39,7 +39,7 @@ The following screenshots demonstrate the core functionalities and the user expe
 
 ---
 
-## 🔑 Demo Access
+##  Demo Access
 
 To make testing easier, the project includes seeded dummy data.
 
@@ -52,7 +52,7 @@ Student users can register through the **Signup** page to explore their personal
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Frontend:** React (Vite), CSS3, Lucide Icons, React Toastify.
 - **Backend:** Node.js, Express.js.
@@ -61,7 +61,7 @@ Student users can register through the **Signup** page to explore their personal
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Option A: Run with Docker (Recommended)
 ```bash
@@ -85,7 +85,7 @@ docker-compose up --build
 
 ---
 
-## 📦 Project Structure
+##  Project Structure
 ```text
 NoticeHub
 ├── frontend/             # React Application
@@ -96,10 +96,3 @@ NoticeHub
 ```
 
 ---
-
-## 🌐 Deployment
-- **Frontend**: Deploy `dist` folder to Vercel/Netlify.
-- **Backend**: Deploy to Render/Heroku with MongoDB Atlas.
-
----
-**Developed with ❤️ by [Your Name]**

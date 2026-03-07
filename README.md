@@ -65,7 +65,7 @@ Student users can register through the **Signup** page to explore their personal
 
 ### Option A: Run with Docker (Recommended)
 ```bash
-git clone https://github.com/your-username/NoticeHub.git
+git clone https://github.com/GVK-Sindhu/diginotice.git
 cd NoticeHub
 docker-compose up --build
 ```

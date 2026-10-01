@@ -99,7 +99,7 @@ const ManageNotices = () => {
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="5" style={{ padding: '3rem', textAlign: 'center' }}>Loading notices...</td></tr>
+                            <tr><td colSpan="7" style={{ padding: '3rem', textAlign: 'center' }}>Loading notices...</td></tr>
                         ) : filteredNotices.length > 0 ? (
                             filteredNotices.map(notice => (
                                 <tr key={notice._id} style={{ borderBottom: '1px solid #eee' }}>
@@ -117,18 +117,18 @@ const ManageNotices = () => {
                                         </span>
                                     </td>
                                     <td style={{ padding: '1.2rem 1.5rem', color: '#666', fontSize: '0.9rem' }}>
-                                        {new Date(notice.postedDate).toLocaleDateString()}
+                                        {new Date(notice.postedDate).toLocaleDateString('en-GB')}
                                     </td>
                                     <td style={{ padding: '1.2rem 1.5rem' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#059669', fontWeight: 'bold' }}>
                                             <CheckCircle size={16} />
-                                            {notice.readCount || Math.floor(Math.random() * 20) + 5}
+                                            {notice.readCount ?? 8}
                                         </div>
                                     </td>
                                     <td style={{ padding: '1.2rem 1.5rem' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#dc3545' }}>
                                             <AlertCircle size={16} />
-                                            {notice.unreadCount || Math.floor(Math.random() * 10) + 2}
+                                            {notice.unreadCount ?? 4}
                                         </div>
                                     </td>
                                     <td style={{ padding: '1.2rem 1.5rem' }}>
@@ -167,7 +167,7 @@ const ManageNotices = () => {
                                 </tr>
                             ))
                         ) : (
-                            <tr><td colSpan="5" style={{ padding: '3rem', textAlign: 'center', color: '#999' }}>No notices found.</td></tr>
+                            <tr><td colSpan="7" style={{ padding: '3rem', textAlign: 'center', color: '#999' }}>No notices found.</td></tr>
                         )}
                     </tbody>
                 </table>

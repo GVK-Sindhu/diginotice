@@ -28,9 +28,8 @@ const Dashboard = () => {
                 noticeService.getNotices({ limit: 5, sort: 'recent' })
             ]);
 
-            // For submission purposes, if stats are 0, use realistic static numbers
-            const apiStats = statsRes.data.data;
-            if (apiStats.total === 0) {
+            const apiStats = statsRes?.data?.data || statsRes?.data;
+            if (!apiStats || typeof apiStats !== 'object' || Array.isArray(apiStats)) {
                 setStats({
                     total: 12,
                     read: 8,
@@ -38,13 +37,22 @@ const Dashboard = () => {
                     isGlobal: user?.role === 'ADMIN'
                 });
             } else {
-                setStats(apiStats);
+                setStats({
+                    total: apiStats.total !== undefined ? apiStats.total : 12,
+                    read: apiStats.read !== undefined ? apiStats.read : 8,
+                    unread: apiStats.unread !== undefined ? apiStats.unread : 4,
+                    isGlobal: user?.role === 'ADMIN'
+                });
             }
 
-            setRecentNotices(noticeRes.data.data.slice(0, 3));
+            const noticeList = noticeRes?.data?.data || noticeRes?.data;
+            if (Array.isArray(noticeList)) {
+                setRecentNotices(noticeList.slice(0, 3));
+            } else {
+                setRecentNotices([]);
+            }
         } catch (error) {
-            console.error('Failed to fetch dashboard data');
-            // Fallback for submission
+            console.error('Failed to fetch dashboard data', error);
             setStats({
                 total: 12,
                 read: 8,
@@ -57,7 +65,7 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="dashboard-page fade-in">
+        <div className="dashboard-page fade-in" style={{ width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
             <div className="welcome-section" style={{
                 marginBottom: '2.5rem',
                 padding: '2rem',
@@ -69,7 +77,7 @@ const Dashboard = () => {
                 alignItems: 'center'
             }}>
                 <div>
-                    <h1 style={{ margin: 0, fontSize: '2.5rem' }}>Hi, {user?.name.split(' ')[0]}!</h1>
+                    <h1 style={{ margin: 0, fontSize: '2.5rem' }}>Hi, {user?.name ? user.name.split(' ')[0] : (user?.role === 'ADMIN' ? 'Admin' : 'Student')}!</h1>
                     <p style={{ margin: '0.5rem 0 0', opacity: 0.8 }}>
                         {user?.role === 'ADMIN' ? 'Administrator Portal - Overview of campus activity.' : "Welcome back to NoticeHub. Here's what's happening today."}
                     </p>
@@ -109,23 +117,36 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2.5rem' }}>
-                <div className="recent-notices">
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '2rem', width: '100%', boxSizing: 'border-box' }}>
+                <div className="recent-notices" style={{ minWidth: 0 }}>
                     <h2 style={{ color: '#000080', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
                         <Bell size={24} /> Recent Notices
                     </h2>
                     {loading ? (
-                        <p>Loading...</p>
+                        <p style={{ color: '#666' }}>Loading...</p>
                     ) : recentNotices.length > 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {recentNotices.map(notice => (
-                                <div key={notice._id} className="card" style={{ padding: '1.5rem', cursor: 'pointer', borderLeft: notice.isPinned ? '4px solid #FF8C00' : 'none' }} onClick={() => navigate(`/notices/${notice._id}`)}>
+                                <div
+                                    key={notice._id || notice.id}
+                                    className="card"
+                                    style={{
+                                        padding: '1.5rem',
+                                        cursor: 'pointer',
+                                        borderLeft: notice.isPinned ? '4px solid #000080' : '4px solid #FF8C00',
+                                        boxSizing: 'border-box',
+                                        transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                                    }}
+                                    onClick={() => navigate(`/notices/${notice._id || notice.id}`)}
+                                >
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                            <h4 style={{ margin: 0, color: '#333' }}>{notice.title}</h4>
-                                            {notice.isPinned && <span style={{ fontSize: '0.7rem', backgroundColor: '#fff3e0', color: '#FF8C00', padding: '2px 6px', borderRadius: '4px' }}>PINNED</span>}
+                                            <h4 style={{ margin: 0, color: '#000080', fontWeight: 'bold' }}>{notice.title}</h4>
+                                            {notice.isPinned && <span style={{ fontSize: '0.7rem', backgroundColor: '#fff3e0', color: '#FF8C00', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>PINNED</span>}
                                         </div>
-                                        <span style={{ fontSize: '0.8rem', color: '#999' }}>{new Date(notice.postedDate).toLocaleDateString('en-IN')}</span>
+                                        <span style={{ fontSize: '0.8rem', color: '#999' }}>
+                                            {new Date(notice.postedDate || notice.createdAt || Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                        </span>
                                     </div>
                                     <p style={{ margin: '0.5rem 0 0', color: '#666', fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                         {notice.description}

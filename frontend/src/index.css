@@ -20,6 +20,15 @@
   box-sizing: border-box;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-color);
@@ -59,22 +68,32 @@ button {
   background-color: #E67E00;
 }
 
-/* Dashboard Layout */
+/* Dashboard Layout - Fits screen width perfectly with fixed sidebar */
 .dashboard-container {
-  display: flex;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .main-content {
-  flex: 1;
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  max-width: calc(100% - 260px);
+  min-height: 100vh;
   padding: 2rem;
-  margin-left: 260px; /* Sidebar width */
+  box-sizing: border-box;
+  overflow-x: hidden;
   transition: var(--transition);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .main-content {
     margin-left: 0;
+    width: 100%;
+    max-width: 100vw;
     padding: 1rem;
   }
 }

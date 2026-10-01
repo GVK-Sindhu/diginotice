@@ -23,7 +23,7 @@ router
 router
     .route('/:id')
     .get(getNotice)
-    .put(protect, authorize('ADMIN'), updateNotice)
+    .put(protect, authorize('ADMIN'), upload.array('attachments', 5), updateNotice)
     .delete(protect, authorize('ADMIN'), deleteNotice);
 
 router.get('/stats', protect, getNoticeStats);

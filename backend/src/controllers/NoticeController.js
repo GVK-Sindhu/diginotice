@@ -147,6 +147,36 @@ exports.updateNotice = async (req, res, next) => {
             return res.status(401).json({ success: false, message: 'Not authorized to update this notice' });
         }
 
+        let existingAttachments = notice.attachments || [];
+        if (req.body.existingAttachments) {
+            try {
+                const parsed = JSON.parse(req.body.existingAttachments);
+                if (Array.isArray(parsed)) {
+                    existingAttachments = parsed;
+                }
+            } catch (e) {
+                // Keep current attachments
+            }
+        }
+
+        if (req.files && req.files.length > 0) {
+            const newAttachments = req.files.map(file => {
+                let url = file.path;
+                if (!url.startsWith('http')) {
+                    const relativePath = file.path.replace(/\\/g, '/');
+                    url = relativePath.startsWith('/') ? relativePath : `/${relativePath}`;
+                }
+                return {
+                    url,
+                    fileType: file.mimetype.startsWith('image') ? 'image' : 'pdf',
+                    publicId: file.filename || file.public_id
+                };
+            });
+            req.body.attachments = [...existingAttachments, ...newAttachments];
+        } else if (req.body.existingAttachments !== undefined) {
+            req.body.attachments = existingAttachments;
+        }
+
         notice = await Notice.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true

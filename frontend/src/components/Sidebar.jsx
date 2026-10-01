@@ -7,7 +7,6 @@ import {
     Settings,
     LogOut,
     FileText,
-    Camera,
     Mail
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -27,8 +26,7 @@ const Sidebar = () => {
     if (user?.role === 'ADMIN') {
         navItems.push(
             { title: 'Create Notice', icon: <PlusCircle size={20} />, path: '/create-notice' },
-            { title: 'Manage Notices', icon: <Settings size={20} />, path: '/manage-notices' },
-            { title: 'Image Scanner', icon: <Camera size={20} />, path: '/scanner' }
+            { title: 'Manage Notices', icon: <Settings size={20} />, path: '/manage-notices' }
         );
     }
 
@@ -43,7 +41,9 @@ const Sidebar = () => {
             top: 0,
             padding: '2rem 1rem',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            boxSizing: 'border-box',
+            zIndex: 100
         }}>
             <div className="logo" style={{ marginBottom: '3rem', fontSize: '1.5rem', fontWeight: 'bold' }}>
                 NoticeHub

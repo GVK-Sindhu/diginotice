@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import { noticeService } from '../services/api';
-import { ImageScanner } from '../components';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import {
     Send,
-    FileText,
     Type,
     Link as LinkIcon,
     Paperclip,
-    Camera,
     Layers,
-    CheckCircle,
     X
 } from 'lucide-react';
 
 const CreateNotice = () => {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -24,10 +22,7 @@ const CreateNotice = () => {
         isPinned: false
     });
     const [files, setFiles] = useState([]);
-    const [showScanner, setShowScanner] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -39,16 +34,6 @@ const CreateNotice = () => {
 
     const handleFileChange = (e) => {
         setFiles([...files, ...Array.from(e.target.files)]);
-    };
-
-    const handleScannerCapture = (base64) => {
-        // Convert base64 to file
-        const fetchRes = fetch(base64);
-        fetchRes.then(res => res.blob()).then(blob => {
-            const file = new File([blob], `scanned-notice-${Date.now()}.jpg`, { type: 'image/jpeg' });
-            setFiles([...files, file]);
-            toast.success('Notice photo captured successfully!');
-        });
     };
 
     const handleSubmit = async (e) => {
@@ -74,11 +59,6 @@ const CreateNotice = () => {
 
     return (
         <div className="create-notice-page">
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', gap: '1rem' }}>
-                <CheckCircle size={32} style={{ color: '#000080' }} />
-                <h1 style={{ color: '#000080', margin: 0 }}>Create New Notice</h1>
-            </div>
-
             <div className="card fade-in" style={{ padding: '2.5rem' }}>
                 <form onSubmit={handleSubmit}>
                     <div style={{ marginBottom: '1.5rem' }}>
@@ -150,26 +130,35 @@ const CreateNotice = () => {
                                     Upload Files
                                     <input type="file" multiple onChange={handleFileChange} style={{ display: 'none' }} />
                                 </label>
-
-                                <button
-                                    type="button"
-                                    onClick={() => setShowScanner(true)}
-                                    className="btn-primary"
-                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', fontSize: '0.9rem', backgroundColor: '#333' }}
-                                >
-                                    <Camera size={18} />
-                                    Scan Notice
-                                </button>
                             </div>
 
                             {files.length > 0 && (
-                                <div style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                    {files.map((f, i) => (
-                                        <span key={i} style={{ backgroundColor: '#eee', padding: '0.3rem 0.8rem', borderRadius: '15px', fontSize: '0.8rem', display: 'flex', alignItems: 'center' }}>
-                                            {f.name}
-                                            <X size={14} style={{ marginLeft: '0.5rem', cursor: 'pointer', color: '#666' }} onClick={() => setFiles(files.filter((_, idx) => idx !== i))} />
-                                        </span>
-                                    ))}
+                                <div style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                                    {files.map((f, i) => {
+                                        const isImg = f.type?.startsWith('image') || /\.(jpg|jpeg|png|webp)$/i.test(f.name);
+                                        return (
+                                            <div key={i} style={{
+                                                backgroundColor: '#f1f5f9',
+                                                border: '1px solid #cbd5e1',
+                                                padding: '0.4rem 0.8rem',
+                                                borderRadius: '6px',
+                                                fontSize: '0.85rem',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '0.5rem'
+                                            }}>
+                                                {isImg && (
+                                                    <img
+                                                        src={URL.createObjectURL(f)}
+                                                        alt={f.name}
+                                                        style={{ width: '28px', height: '28px', objectFit: 'cover', borderRadius: '4px' }}
+                                                    />
+                                                )}
+                                                <span style={{ maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.name}</span>
+                                                <X size={15} style={{ cursor: 'pointer', color: '#dc2626' }} onClick={() => setFiles(files.filter((_, idx) => idx !== i))} />
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             )}
                         </div>
@@ -202,13 +191,6 @@ const CreateNotice = () => {
                     </button>
                 </form>
             </div>
-
-            {showScanner && (
-                <ImageScanner
-                    onCapture={handleScannerCapture}
-                    onClose={() => setShowScanner(false)}
-                />
-            )}
         </div>
     );
 };

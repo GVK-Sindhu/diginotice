@@ -12,7 +12,6 @@ import Dashboard from './pages/Dashboard';
 import CreateNotice from './pages/CreateNotice';
 import ManageNotices from './pages/ManageNotices';
 import DriveAnalytics from './pages/DriveAnalytics';
-import ScannerPage from './pages/ScannerPage';
 import EditNotice from './pages/EditNotice';
 import Contact from './pages/Contact';
 import Notices from './pages/Notices';
@@ -60,8 +59,6 @@ const App = () => {
                 <DriveAnalytics />
               </ProtectedRoute>
             } />
-
-            <Route path="scanner" element={<ProtectedRoute><ScannerPage /></ProtectedRoute>} />
           </Route>
         </Routes>
       </Router>

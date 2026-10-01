@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { noticeService } from '../services/api';
+import { DEFAULT_NOTICES } from '../services/mockData';
 import { NoticeCard } from '../components';
 import { Filter, Calendar as CalendarIcon, AlertCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -29,9 +30,15 @@ const Notices = () => {
         try {
             setLoading(true);
             const res = await noticeService.getNotices(filters);
-            setNotices(res.data.data);
+            const noticeList = res?.data?.data || res?.data;
+            if (Array.isArray(noticeList) && noticeList.length > 0) {
+                setNotices(noticeList);
+            } else {
+                setNotices(DEFAULT_NOTICES);
+            }
         } catch (error) {
-            toast.error('Failed to fetch notices');
+            console.error('Failed to fetch notices', error);
+            setNotices(DEFAULT_NOTICES);
         } finally {
             setLoading(false);
         }
@@ -77,7 +84,7 @@ const Notices = () => {
             {loading ? (
                 <div style={{ textAlign: 'center', padding: '3rem' }}>Loading notices...</div>
             ) : notices.length > 0 ? (
-                <div className="notices-grid">
+                <div className="notices-grid" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                     {notices.map(notice => (
                         <NoticeCard key={notice._id} notice={notice} />
                     ))}

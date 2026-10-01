@@ -4,4 +4,3 @@ export { default as Layout } from './Layout';
 export { default as NoticeCard } from './NoticeCard';
 export { default as ProtectedRoute } from './ProtectedRoute';
 export { default as NoticeForm } from './NoticeForm';
-export { default as ImageScanner } from './ImageScanner';
